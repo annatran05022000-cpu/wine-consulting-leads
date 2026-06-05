@@ -8,7 +8,9 @@
   <div class="container">
     {{ with index $posts 0 }}
     <div class="hero-card">
-      <div class="hero-thumb" style="background: linear-gradient(135deg, var(--main) 0%, var(--accent) 100%);">
+      <div class="hero-thumb">
+        {{ $tag := index .Params.tags 0 | default "business" | urlize }}
+        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=500&fit=crop&auto=format&q=80" alt="{{ .Title }}" loading="lazy">
         <span class="hero-category">{{ index .Params.tags 0 | default "Featured" }}</span>
       </div>
       <div class="hero-body">
@@ -34,10 +36,27 @@
       <h2 class="section-title">Latest Articles</h2>
       <a href="/posts/" class="view-all">View All &rarr;</a>
     </div>
+    {{ $cardPhotos := slice
+      "photo-1486312338219-ce68d2c6f44d"
+      "photo-1460925895917-afdab827c52f"
+      "photo-1497032205916-ac775f0649ae"
+      "photo-1552664730-d307ca884978"
+      "photo-1542744094-3a31f272c490"
+      "photo-1516321318423-f06f85e504b3"
+      "photo-1432888498266-38ffec3eaf0a"
+      "photo-1553877522-43269d4ea984"
+      "photo-1551434678-e076c223a692"
+      "photo-1522071820081-009f0129c71c"
+      "photo-1507003211169-0a1dd7228f2d"
+      "photo-1504868584819-f8e8b4b6d7e3"
+    }}
     <div class="post-grid">
       {{ range after 1 $posts }}
+      {{ $idx := mod (len .Slug) (len $cardPhotos) }}
+      {{ $photo := index $cardPhotos $idx }}
       <article class="post-card">
-        <div class="card-thumb" style="background: linear-gradient(135deg, var(--card) 0%, var(--main) 100%);">
+        <div class="card-thumb">
+          <img src="https://images.unsplash.com/{{ $photo }}?w=600&h=360&fit=crop&auto=format&q=80" alt="{{ .Title }}" loading="lazy">
           {{ range first 1 .Params.tags }}<span class="card-category">{{ . }}</span>{{ end }}
         </div>
         <div class="card-body">
