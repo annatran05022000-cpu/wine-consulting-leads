@@ -1,20 +1,76 @@
 {{ define "main" }}
-<div class="single-post">
-  <article>
-    <h1>{{ .Title }}</h1>
-    <div class="post-meta" style="font-family:sans-serif;font-size:0.85rem;opacity:0.65;margin:0.5rem 0 1.5rem">
-      {{ .Date.Format "January 2, 2006" }} &middot; {{ .ReadingTime }} min read
-      {{ range .Params.tags }}<span class="tag" style="margin-left:0.5rem">{{ . }}</span>{{ end }}
-    </div>
-    {{ if .Description }}<p class="lead" style="font-size:1.1rem;opacity:0.75;margin-bottom:1.5rem;border-left:3px solid var(--accent);padding-left:1rem">{{ .Description }}</p>{{ end }}
-    <div class="post-content">
+<div class="single-wrap">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="/">Home</a> <span>/</span>
+    <a href="/posts/">Articles</a> <span>/</span>
+    <span>{{ .Title | truncate 40 }}</span>
+  </div>
+
+  <article class="single-article">
+    <!-- Header -->
+    <header class="article-header">
+      <div class="article-cats">
+        {{ range .Params.tags }}<a href="/posts/" class="tag">{{ . }}</a>{{ end }}
+      </div>
+      <h1 class="article-title">{{ .Title }}</h1>
+      {{ if .Description }}
+      <p class="article-lead">{{ .Description }}</p>
+      {{ end }}
+      <div class="article-meta">
+        <span class="meta-author">By {{ .Site.Params.author | default "Editorial Team" }}</span>
+        <span class="meta-dot">&middot;</span>
+        <time>{{ .Date.Format "January 2, 2006" }}</time>
+        <span class="meta-dot">&middot;</span>
+        <span>{{ .ReadingTime }} min read</span>
+      </div>
+    </header>
+
+    <!-- Thumb banner -->
+    <div class="article-banner" style="background: linear-gradient(135deg, var(--main) 0%, var(--accent) 60%, var(--card) 100%);"></div>
+
+    <!-- Body -->
+    <div class="article-body">
       {{ .Content }}
     </div>
+
+    <!-- Tags footer -->
+    <div class="article-tags">
+      <strong>Topics:</strong>
+      {{ range .Params.tags }}<a href="/posts/" class="tag">{{ . }}</a>{{ end }}
+    </div>
   </article>
-  <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--card)">
-    <p style="font-family:sans-serif;font-size:0.85rem">
-      Looking for verified business leads? Check out <a href="https://getleadsnap.pro" target="_blank" rel="noopener">GetLeadSnap</a> — the fastest way to find and export local business leads in the US.
-    </p>
+
+  <!-- CTA box -->
+  <div class="inline-cta">
+    <div class="inline-cta-icon">&#128270;</div>
+    <div>
+      <strong>Looking for qualified business leads?</strong>
+      <p>GetLeadSnap lets you search 10M+ verified local business contacts across the US — filter by city, industry, and size, then export instantly.</p>
+      <a href="https://getleadsnap.pro" target="_blank" rel="noopener" class="btn-cta">Try GetLeadSnap Free &rarr;</a>
+    </div>
   </div>
+
+  <!-- Related articles -->
+  {{ $related := where .Site.RegularPages "Type" "posts" }}
+  {{ $others := where $related ".Permalink" "ne" .Permalink }}
+  {{ if gt (len $others) 0 }}
+  <div class="related-section">
+    <h3 class="section-title">More Articles</h3>
+    <div class="related-grid">
+      {{ range first 3 $others }}
+      <div class="related-card">
+        <div class="related-thumb" style="background: linear-gradient(135deg, var(--card) 0%, var(--main) 100%);"></div>
+        <div class="related-body">
+          <div class="card-meta">{{ .Date.Format "Jan 2, 2006" }} &middot; {{ .ReadingTime }} min</div>
+          <h4><a href="{{ .Permalink }}">{{ .Title }}</a></h4>
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+  {{ end }}
+
 </div>
 {{ end }}
