@@ -1,0 +1,19 @@
+{{ define "main" }}
+<div class="container">
+  <ul class="post-list">
+    {{ range where .Site.RegularPages "Type" "posts" }}
+    <li class="post-list-item">
+      <div class="text">
+        <h2><a href="{{ .Permalink }}">{{ .Title }}</a></h2>
+        <p class="desc">{{ .Description | default .Summary | truncate 120 }}</p>
+        <div class="meta-row">
+          <span class="author-chip">Editorial Team</span>
+          <span>{{ .Date.Format "Jan 2, 2006" }}</span>
+          <span>{{ .ReadingTime }} min read</span>
+        </div>
+      </div>
+    </li>
+    {{ end }}
+  </ul>
+</div>
+{{ end }}

@@ -1,0 +1,16 @@
+
+baseURL = "/"
+languageCode = "en-us"
+title = "Wine Consulting Leads"
+theme = "custom"
+
+[params]
+  description = "Business development for consultants and coaches: niche positioning, thought leadership, and inbound leads."
+  author = "Editorial Team"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[sitemap]
+  changefreq = "weekly"
+  priority = 0.5
